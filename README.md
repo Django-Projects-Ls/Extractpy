@@ -1,6 +1,6 @@
-# Recapify
+# Extractpy
 
-Recapify is an open source project that summarizes videos on YouTube, now you can see if the video topics might be of interest to you
+Extractpy is an open source project that get a video file and extract the audio from it
 
 ## Setup Virtual Environment (venv)
 
