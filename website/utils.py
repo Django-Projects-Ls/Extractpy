@@ -4,7 +4,8 @@ from django.conf import settings
 from pathlib import Path
 from os import remove
 
-class VideoTranscriber:
+
+class AudioExtractor:
     def __init__(self: any, path_video: str) -> None:
         self.path_video = path_video
         self.video = VideoFileClip(self.path_video)
@@ -19,5 +20,5 @@ class VideoTranscriber:
         """This method extracts the audio from the video file."""
 
         self.video.audio.write_audiofile(self.audio_file_path)
-        
+
         remove(self.path_video)
