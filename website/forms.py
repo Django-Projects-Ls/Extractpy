@@ -8,19 +8,20 @@ class VideoForm(forms.ModelForm):
     class Meta:
         model = Video
         fields = ["video_file"]
-        widgets = {"video_file": forms.FileInput(attrs={"accept": "video/*"})}
+        widgets = {"video_file": forms.FileInput(attrs={"accept": "video/mp4"})}
 
     def clean(self):
-        video_file = self.cleaned_data["video_file"]
+        cleaned_data = super().clean()
+        video_file = cleaned_data.get("video_file")
 
         if video_file:
             file_type = magic.from_buffer(video_file.read(), mime=True)
 
-            if file_type != "video/*":
+            if file_type != "video/mp4":
                 raise forms.ValidationError(
                     "Unsupported file type. Only mp4 videos are allowed."
                 )
 
             video_file.seek(0)
 
-        return video_file
+        return cleaned_data
