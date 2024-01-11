@@ -1,0 +1,10 @@
+.main-container {
+    height: 100vh !important;
+}
+
+.card-container {
+    height: 30rem !important;
+    width: 70rem !important;
+    border-radius: 10px !important;
+    background-color: rgba(0, 0, 0, 0.09) !important;
+}
