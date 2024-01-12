@@ -1,8 +1,12 @@
 from moviepy.editor import VideoFileClip
+from django.http import FileResponse
+from django.db import transaction
 from django.conf import settings
 
 from pathlib import Path
-from os import remove
+import os
+
+from .models import Video
 
 
 class AudioExtractor:
@@ -21,4 +25,24 @@ class AudioExtractor:
 
         self.video.audio.write_audiofile(self.audio_file_path)
 
-        remove(self.path_video)
+        os.remove(self.path_video)
+
+def download_audio_view(request, pk):
+    # Get the video object
+    video = Video.objects.get(pk=pk)
+
+    # Create the response object
+    response = FileResponse(video.audio_file, as_attachment=True)
+
+    # Delete the file after sending the response
+    response["X-Sendfile"] = video.audio_file.path
+
+    # Delete the file from the file system
+    if os.path.isfile(video.audio_file.path):
+        os.remove(video.audio_file.path)
+
+    # Delete the database record
+    with transaction.atomic():
+        video.delete()
+
+    return response

@@ -8,3 +8,17 @@
     border-radius: 10px !important;
     background-color: rgba(0, 0, 0, 0.09) !important;
 }
+
+.form-container {
+    margin-top: 6.25rem !important;
+}
+
+hr {
+    max-width: 95% !important;
+    margin: auto;
+}
+
+.title-container {
+    margin: 1.25rem 0rem 0rem 1.25rem !important;
+
+}
