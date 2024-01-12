@@ -1,14 +1,10 @@
 from django.views.generic.edit import CreateView
 from django.urls import reverse_lazy
-from django.http import FileResponse
-from django.db import transaction
-
-import os
+from django.shortcuts import redirect
 
 from .utils import AudioExtractor
 from .models import Video
 from .forms import VideoForm
-
 
 class SendVideoRequestHandler(CreateView):
     model = Video
@@ -37,22 +33,6 @@ class SendVideoRequestHandler(CreateView):
         return reverse_lazy("download_audio", args=[str(self.object.id)])
 
 
-def download_audio(request, pk):
-    # Get the video object
-    video = Video.objects.get(pk=pk)
-
-    # Create the response object
-    response = FileResponse(video.audio_file, as_attachment=True)
-
-    # Delete the file after sending the response
-    response["X-Sendfile"] = video.audio_file.path
-
-    # Delete the file from the file system
-    if os.path.isfile(video.audio_file.path):
-        os.remove(video.audio_file.path)
-
-    # Delete the database record
-    with transaction.atomic():
-        video.delete()
-
-    return response
+def home_redirect_view(request):
+    # Redirect to the upload view
+    return redirect(reverse_lazy("upload_video"))
